@@ -1,4 +1,4 @@
-test:
+tests:
 	pub run test
 
 docs:

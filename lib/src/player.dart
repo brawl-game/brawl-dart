@@ -18,17 +18,11 @@ class Player extends Object with Events {
   Player(String name, Game game) {
     this.name = name;
     this.game = game;
-    this.game.players.add(this);
+    game.players.add(this);
     this.bindEvents();
   }
 
+  /// Binds the event listeners that the [Player] object is interested in
   bindEvents() {
-    this.on(GameEventTurnEnd).listen((GameEventTurnEnd e) {
-      print("${this.name}'s turn ended.");
-    });
-
-    this.on(GameEventTurnStart).listen((GameEventTurnStart e) {
-      print("${this.name}'s turn started.");
-    });
   }
 }

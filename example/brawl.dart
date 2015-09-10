@@ -13,6 +13,6 @@ main() {
   final mauno = new Brawl.Player("Mauno", game);
   final jonne = new Brawl.Player("Jonne", game);
 
-  print(mauno.name);
-  print(jonne.name);
+  // Prepare the game
+  game.initialize();
 }

@@ -1,19 +1,16 @@
 library brawl.test;
 
 import 'package:brawl/brawl.dart';
-import 'package:test/test.dart';
+import 'package:guinness/guinness.dart';
 
-import 'dart:io';
 import 'dart:convert';
-import 'dart:async';
 
 void main() {
-  group('Card', () {
-    /// load some cards
+  describe('Card', () {
     var some_cards;
     var collection;
 
-    setUp(() {
+    beforeEach(() {
       var cardres = new Resource("package:brawl/res/some_cards.json");
       var cardfuture = cardres.readAsString();
       collection = new Collection();
@@ -21,30 +18,31 @@ void main() {
           some_cards = new JsonDecoder().convert(carddata));
     });
 
-    /// initial sanity checks
-    group('parse', () {
-      test('accepts simple card', () {
+    describe("parsing", () {
+
+      it('should parse a simple card', () {
         var card = collection.parseCard(some_cards[0]);
-        expect(card, isNotNull);
+        expect(card).toBeNotNull();
       });
-      test('puts card on collection', () {
+      it("doesn't parse the same named card twice", () {
         var card = collection.parseCard(some_cards[0]);
-        expect(collection.cards.length, equals(1));
+        var card2 = collection.parseCard(some_cards[0]);
+        expect(card2).toBeNull();
       });
-      test('puts some card on collection on key', () {
+      it('puts a card on collection', () {
         var card = collection.parseCard(some_cards[0]);
-        expect(collection.cards[card.name], isNotNull);
+        expect(collection.cards.length).toEqual(1);
       });
-      test('puts the card on collection on key', () {
+      it('puts the card on collection on key', () {
         var card = collection.parseCard(some_cards[0]);
-        expect(collection.cards[card.name], equals(card));
+        expect(collection.cards[card.name]).toEqual(card);
       });
     });
 
-    group("feature", () {
-      test('works for taunt', () {
+    describe("feature", () {
+      it('works for taunt', () {
         var card = collection.parseCard(some_cards[1]);
-        expect(card.features.length, equals(1));
+        expect(card.features.length).toEqual(1);
       });
     });
   });

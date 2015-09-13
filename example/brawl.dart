@@ -3,7 +3,7 @@
 
 library brawl.example;
 
-import 'package:brawl/brawl.dart' as Brawl;
+import 'package:brawl/brawl.dart';
 import 'package:logging/logging.dart';
 
 main() {
@@ -13,17 +13,27 @@ main() {
   });
 
   // Set up a new game
-  final game = new Brawl.Game();
+  final game = new Game();
 
   // Create some players
-  final mauno = new Brawl.Player("Mauno", game);
-  final jonne = new Brawl.Player("Jonne", game);
+  final mauno = new Player("Mauno", game);
+  final jonne = new Player("Jonne", game);
   game.players.add(mauno);
   game.players.add(jonne);
+
+  mauno.on(GameEventTurnEnd, (_) {
+    print("Maunon vuoro on nyt ohi. ayy.");
+  });
+
+  final slime = new Character("Slime", 1, 2, game);
+  final blimp = new Character("Blimp", 1, 3, game);
+
+  slime.dealDamage(1, blimp);
 
   // Prepare the game
   game.initialize();
 
+  // Some turns
   game.endTurn();
   game.endTurn();
 }

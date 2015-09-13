@@ -1,37 +1,31 @@
 library brawl.test;
 
 import 'package:brawl/brawl.dart';
-import 'package:test/test.dart';
+import 'package:guinness/guinness.dart';
 
 void main() {
-  group('Game', () {
-    var game = new Game();
-    var mauno;
-    var jonne;
+  describe('Game', () {
+    var game, mauno, jonne;
 
-    group('Initialization', () {
-      test('should have an empty players array upon ', () {
-        expect(game.players, equals([]));
-      });
+    beforeEach(() {
+      game = new Game();
+      mauno = new Player("Mauno", game);
+      jonne = new Player("Jonne", game);
     });
-
-    group('Events', () {
-      test('should accept new players', () {
-        mauno = new Player("Mauno", game);
-        jonne = new Player("Jonne", game);
-        expect(game.players.length, equals(2));
+    describe('Events', () {
+      it('should accept new players', () {
+        expect(game.players.length).toEqual(2);
       });
 
-      test('should emit events on turn end', () {
+      it('should emit events on turn end', () {
         game.initialize();
-        expect(game.currentPlayerIndex, equals(0));
+        expect(game.currentPlayerIndex).toEqual(0);
         game.endTurn();
-        expect(game.currentPlayerIndex, equals(1));
+        expect(game.currentPlayerIndex).toEqual(1);
         game.endTurn();
-        expect(game.currentPlayerIndex, equals(0));
+        expect(game.currentPlayerIndex).toEqual(0);
         game.endTurn();
       });
     });
-
   });
 }

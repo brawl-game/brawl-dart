@@ -1,30 +1,27 @@
 library brawl.test;
 
 import 'package:brawl/brawl.dart';
-import 'package:test/test.dart';
+import 'package:guinness/guinness.dart';
 
-import 'dart:io';
 import 'dart:convert';
-import 'dart:async';
 
 void main() {
-  group('Card', () {
-    /// load some cards
+  describe('Card', () {
     var some_cards;
 
-    setUp(() {
+    beforeEach(() {
       var cardres = new Resource("package:brawl/res/some_cards.json");
       var cardfuture = cardres.readAsString();
       return cardfuture.then((carddata) =>
           some_cards = new JsonDecoder().convert(carddata));
     });
 
-    var collection = new Collection();
+    describe("parsing", () {
+      var collection = new Collection();
 
-    group('parse', () {
-      test('should parse a simple card', () {
+      it('should parse a simple card', () {
         var card = collection.parseCard(some_cards[0]);
-        expect(card, isNotNull);
+        expect(card).toBeNotNull();
       });
     });
   });

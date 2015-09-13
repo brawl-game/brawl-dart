@@ -1,8 +1,7 @@
 library brawl.game;
 
 import 'package:events/events.dart';
-import 'package:logging/logging.dart';
-import "game_events.dart";
+import "game_event.dart";
 import "player.dart";
 
 /// A single game in the brawl engine
@@ -15,7 +14,12 @@ class Game extends Object with Events {
   /// The currently active player's index in the [players] array.
   int currentPlayerIndex = 0;
 
-  Game() {}
+  Game() {
+    /// Run death checks for all creatures after damage events
+    this.on(GameEventDeathCheck, (e) {
+      print("Implement death check.");
+    });
+  }
 
   /// Returns the currently active [Player] instance.
   Player currentPlayer() =>
@@ -41,19 +45,19 @@ class Game extends Object with Events {
     var currentPlayer = this.currentPlayer();
 
     // Emit start of turn events
-    var event = new GameEventTurnStart(currentPlayer); this.emit(event);
-
-    // TODO: Game.startTurn() TURN_STARTED hook and events.
-
+    var event = new GameEventTurnStart(currentPlayer);
+    currentPlayer.emit(event);
+    this.emit(event);
   }
 
   void endTurn() {
-    // Emit events
-    final event = new GameEventTurnEnd(this.currentPlayer());
+    // Send the GameEventTurnEnd events
+    final player = this.currentPlayer();
+    final event  = new GameEventTurnEnd(player);
+    player.emit(event);
     this.emit(event);
-    // TODO: Game.entTurn() TURNN_ENDED
 
-    // Start next turn
+    // Switch to next player and start their turn
     this.currentPlayerIndex = this.nextPlayerIndex();
     this.startTurn();
   }

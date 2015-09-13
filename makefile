@@ -3,3 +3,6 @@ tests:
 
 docs:
 	dartdoc
+
+sample:
+	dart example/brawl.dart
